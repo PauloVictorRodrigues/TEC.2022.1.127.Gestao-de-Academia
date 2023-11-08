@@ -9,19 +9,19 @@ IF(EXISTS(SELECT 1 FROM master.sys.databases WHERE name = 'Academia'))
 DROP DATABASE Academia
 GO
 
-CREATE DATABASE Academia
+CREATE DATABASE GestaoDeAcademia
 GO
 
-USE Academia
+USE GestaoDeAcademia
 GO
 
 IF OBJECT_ID('Usuario', 'U') IS NULL
 CREATE TABLE Usuario
 (
 	Id INT PRIMARY KEY IDENTITY(1,1),
-	Nome VARCHAR(150),
+	Nome VARCHAR(100),
 	NomeUsuario VARCHAR(50),
-	Email VARCHAR(150),
+	Email VARCHAR(60),
 	CPF VARCHAR(15),
 	Ativo BIT,
 	Senha VARCHAR(50)
@@ -61,38 +61,68 @@ CREATE TABLE PermissaoGrupoUsuario
 	CONSTRAINT PK_PermissaoGrupoUsuario PRIMARY KEY (IdPermissao, IdGrupoUsuario)
 )
 GO
-
 CREATE TABLE Cliente
 (
-	Id INT PRIMARY KEY IDENTITY(1,1),
-	Nome VARCHAR(150),
-	CPF VARCHAR(15),
-	RG VARCHAR(15),
-	Email VARCHAR(200),
-	Fone VARCHAR(15)
+	Id_cliente INT PRIMARY KEY IDENTITY(1,1),
+	Nome VARCHAR(100),
+	Aluno BIT,
+	CPF CHAR(14),
+	Telefone CHAR(14),
+	Email VARCHAR(60),
+	Endereco VARCHAR(100),
+	Data_cadastro SMALLDATETIME
 )
 GO
-
 CREATE TABLE Fornecedor
 (
-	Id INT PRIMARY KEY IDENTITY(1,1),
-	Nome VARCHAR(150),
-	CPF VARCHAR(15),
-	RG VARCHAR(15),
+	Id_fornecedor INT PRIMARY KEY IDENTITY(1,1),
+	Nome VARCHAR(100),
+	CPF_CNPJ VARCHAR(15),
 	Email VARCHAR(200),
-	Fone VARCHAR(15)
+	Telefone CHAR(14),
+	Endereco VARCHAR(100)
 )
 GO
 
 CREATE TABLE Produto
 (
-	Id INT PRIMARY KEY IDENTITY(1,1),
-	Nome VARCHAR(150),
-	Descricao VARCHAR(250),
-	Valor FLOAT	
+	Id_produto INT PRIMARY KEY IDENTITY(1,1),
+	Nome VARCHAR(100),
+	Marca VARCHAR(30),
+	Preco FLOAT,
+	Quantidade INT,
+	CodigoDeBarras VARCHAR(20)
 )
 GO
-
+CREATE TABLE Venda
+(
+	Id_venda INT PRIMARY KEY IDENTITY(1,1),
+	Cod_funcionario INT,
+	Cod_cliente INT,
+	Cod_produto INT,
+	Preco FLOAT,
+	Quantidade INT,
+	Data_Venda SMALLDATETIME,
+	Total_Venda FLOAT
+)
+GO
+CREATE TABLE Venda_Direta
+(
+	Id_venda INT PRIMARY KEY IDENTITY(1,1),
+	Cod_funcionario INT,
+	Data_Venda SMALLDATETIME,
+	Total_Venda FLOAT
+)
+GO
+CREATE TABLE Itens_Venda_Direto
+(
+	Cod_venda INT,
+	Cod_produto INT,
+	Preco_unitario FLOAT,
+	Quantidade INT,
+	Valor_totaL FLOAT
+)
+GO
 
 
 IF NOT EXISTS (SELECT 1 FROM SYS.INDEXES WHERE object_id = OBJECT_ID('Usuario') AND IS_PRIMARY_KEY = 1)
@@ -181,3 +211,4 @@ INSERT INTO PermissaoGrupoUsuario (IdGrupoUsuario, IdPermissao)VALUES(2, 3)
 GO
 
 
+select*from Usuario
